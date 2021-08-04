@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SyncEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,17 @@ class PostController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         
+        $hijos = [
+            'abner',
+            'marcos',
+            'samuel',
+            'moises'
+
+        ];
+        $request->session()->put('hijos', $hijos);
         return view('post.create');
     }
 
@@ -26,14 +35,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'titulo' => 'bail|required|max:25',
-            'nombre' => 'required',
-            'email' => 'required',
-        ]);
-        
+        // $validated = $request->validate([
+        //     'titulo' => 'bail|required|max:25',
+        //     'nombre' => 'required',
+        //     'email' => 'required',
+        // ]);
 
-        echo $validated ? "datos validos" : "error en los datos";
+
+        // echo $validated ? "datos validos" : "error en los datos";
+        if (true){
+            SyncEvent::dispatch();
+            
+            var_dump($request->session()->get('hijos'));
+        }
+            
+            
         
     }
 }
